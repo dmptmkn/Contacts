@@ -16,6 +16,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void create(Contact contact) {
+        if (contact == null) throw new IllegalArgumentException();
+
         contactRepository.save(contact);
     }
 
@@ -26,11 +28,15 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact findById(Long id) {
+        if (id == null) throw new IllegalArgumentException();
+
         return contactRepository.findById(id).orElseThrow();
     }
 
     @Override
     public void update(Long id, String phoneNumber) {
+        if (id == null || phoneNumber == null) throw new IllegalArgumentException();
+
         Contact contactToUpdate = findById(id);
         contactToUpdate.setPhoneNumber(phoneNumber);
         contactRepository.save(contactToUpdate);
@@ -38,8 +44,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void delete(Long id) {
+        if (id == null) throw new IllegalArgumentException();
+
         contactRepository.deleteById(id);
     }
 }
-
-// дз: добавить логирование ошибок и запросов; добавить проверки параметров на null;
