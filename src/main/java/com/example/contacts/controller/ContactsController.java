@@ -11,9 +11,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/api/v1/contacts")
-public class ContactController {
+public class ContactsController {
 
     private final ContactService contactService;
+
+    @PostMapping("/create")
+    public void create(@ModelAttribute("person") Contact contact) {
+        contactService.create(contact);
+    }
 
     @GetMapping
     public List<Contact> findAll() {
@@ -25,10 +30,13 @@ public class ContactController {
         return contactService.findById(id);
     }
 
-    @PostMapping("/create")
-    public void create(@ModelAttribute Contact contact) {
-        contactService.create(contact);
+    @PatchMapping("/{id}?{phone}")
+    public void update(@PathVariable("id") Long id, @PathVariable("phone") String phoneNumber) {
+        contactService.update(id, phoneNumber);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        contactService.delete(id);
     }
 }
-
-// дз: написать контроллер для всех остальных методов сервиса
