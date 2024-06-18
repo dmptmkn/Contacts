@@ -18,14 +18,13 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void create(Contact contact) {
-        if (contact == null) throw new IllegalArgumentException();
-
-        try {
-            contactRepository.save(contact);
-            log.info("New contact created: " + contact);
-        } catch (Exception e) {
-            log.error("Error while creating new contact: " + e.getMessage());
+        if (contact == null) {
+            log.debug("Contact cannot be NULL");
+            throw new NullPointerException();
         }
+
+        contactRepository.save(contact);
+        log.info("New contact created: {}", contact);
     }
 
     @Override
@@ -35,34 +34,35 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact findById(Long id) {
-        if (id == null) throw new IllegalArgumentException();
+        if (id == null) {
+            log.debug("Id cannot be NULL");
+            throw new NullPointerException();
+        }
 
         return contactRepository.findById(id).orElseThrow();
     }
 
     @Override
     public void update(Long id, String phoneNumber) {
-        if (id == null || phoneNumber == null) throw new IllegalArgumentException();
-
-        try {
-            Contact contactToUpdate = findById(id);
-            contactToUpdate.setPhoneNumber(phoneNumber);
-            contactRepository.save(contactToUpdate);
-            log.info("Contact updated: " + contactToUpdate);
-        } catch (Exception e) {
-            log.error("Error while updating a contact: " + e.getMessage());
+        if (id == null || phoneNumber == null) {
+            log.debug("Id or phone number cannot be NULL");
+            throw new NullPointerException();
         }
+
+        Contact contactToUpdate = findById(id);
+        contactToUpdate.setPhoneNumber(phoneNumber);
+        contactRepository.save(contactToUpdate);
+        log.info("Contact updated: {}", contactToUpdate);
     }
 
     @Override
     public void delete(Long id) {
-        if (id == null) throw new IllegalArgumentException();
-
-        try {
-            contactRepository.deleteById(id);
-            log.info("Contact with id " + id + "have been deleted");
-        } catch (Exception e) {
-            log.error("Error while deleting a contact: " + e.getMessage());
+        if (id == null) {
+            log.debug("Id cannot be NULL");
+            throw new NullPointerException();
         }
+
+        contactRepository.deleteById(id);
+        log.info("Contact with id {} have been deleted", id);
     }
 }
