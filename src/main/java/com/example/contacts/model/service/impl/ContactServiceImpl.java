@@ -15,6 +15,7 @@ import java.util.List;
 public class ContactServiceImpl implements ContactService {
 
     private final ContactRepository contactRepository;
+    private static final String NULL_ID = "Id cannot be null";
 
     @Override
     public void create(Contact contact) {
@@ -35,7 +36,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact findById(Long id) {
         if (id == null) {
-            log.debug("Id cannot be NULL");
+            log.debug(NULL_ID);
             throw new NullPointerException();
         }
 
@@ -58,7 +59,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void delete(Long id) {
         if (id == null) {
-            log.debug("Id cannot be NULL");
+            log.debug(NULL_ID);
             throw new NullPointerException();
         }
 
